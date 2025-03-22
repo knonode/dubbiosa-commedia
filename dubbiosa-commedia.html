@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>la dubbiosa commedia</title>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            margin: 0;
+            padding: 20px;
+            color: #f5f5f5;
+        }
+        
+        h1, h2 {
+            text-align: center;
+            color: #ffffff;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .tables-container {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            width: 100%;
+            overflow-x: auto;
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .cantica {
+            flex: 1;
+            min-width: 30%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cantica-header {
+            padding: 15px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            font-family: Helvetica, Arial, sans-serif;
+            letter-spacing: 0.5px;
+        }
+        
+        #inferno .cantica-header {
+            background-color: #8B0000;
+            color: white;
+        }
+        
+        #purgatorio .cantica-header {
+            background-color: #4682B4;
+            color: white;
+        }
+        
+        #paradiso .cantica-header {
+            background-color: #FFD700;
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            background-color: white;
+            color: #333;
+            border: 2px solid #000;
+        }
+        
+        th, td {
+            border: 1px solid #000;
+            padding: 2px;
+            text-align: center;
+            height: 30px;
+            color: #333;
+        }
+        
+        .canto-number {
+            width: 30px;
+            min-width: 30px;
+            font-weight: bold;
+            background-color: #f8f8f8;
+            font-size: 13px;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        
+        .level-name {
+            width: 30px;
+            min-width: 30px;
+            position: relative;
+            text-align: center;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 0;
+        }
+        
+        .level-name-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-90deg);
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
+            font-family: Helvetica, Arial, sans-serif;
+            letter-spacing: 0.5px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .canto-content {
+            height: auto;
+            min-height: 30px;
+            width: 100%;
+            cursor: text;
+            position: relative;
+            vertical-align: top;
+        }
+        
+        .canto-note {
+            width: 100%;
+            min-height: 30px;
+            border: none;
+            background-color: transparent;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            padding: 4px;
+            resize: vertical;
+            overflow: auto;
+            box-sizing: border-box;
+            display: block;
+        }
+        
+        .canto-note:focus {
+            outline: 1px solid #4682B4;
+            box-shadow: 0 0 3px rgba(70, 130, 180, 0.5);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 32px;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        #inferno .level-name-text, #purgatorio .level-name-text {
+            color: white;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 750px) {
+            .tables-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .cantica {
+                min-width: 100%;
+            }
+            
+            /* Ensure the tables are still readable on small screens */
+            .canto-number {
+                width: 25px;
+                min-width: 25px;
+                font-size: 12px;
+            }
+            
+            .level-name {
+                width: 25px;
+                min-width: 25px;
+            }
+            
+            /* Make the header text a bit smaller on mobile */
+            .cantica-header {
+                font-size: 22px;
+                padding: 10px;
+            }
+            
+            /* Adjust the button container for mobile */
+            [style*="display: flex"][style*="justify-content: center"] {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        .add-tag-button {
+            align-self: flex-start;
+            background-color: transparent;
+            color: #333; /* Dark text color */
+            border: none;
+            border-radius: 2px;
+            padding: 0;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 4px;
+            width: 14px; /* Even smaller width */
+            height: 14px; /* Even smaller height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .add-tag-button:hover {
+            background-color: rgba(0, 0, 0, 0.05); /* Very subtle hover effect */
+        }
+    </style>
+</head>
+<body>
+    <h1>😈 La Dubbiosa Commedia 😇</h1>
+    <div class="container">
+        <div class="tables-container">
+            <div id="inferno" class="cantica">
+                <div class="cantica-header">Inferno</div>
+                <table id="inferno-table"></table>
+            </div>
+            
+            <div id="purgatorio" class="cantica">
+                <div class="cantica-header">Purgatorio</div>
+                <table id="purgatorio-table"></table>
+            </div>
+            
+            <div id="paradiso" class="cantica">
+                <div class="cantica-header">Paradiso</div>
+                <table id="paradiso-table"></table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration for the three cantiche
+        const canticheConfig = {
+            inferno: {
+                name: "Inferno",
+                levels: [
+                    { name: "Dark Forest", color: "#2E4600", cantos: [1, 2] },
+                    { name: "Gate", color: "#8B4513", cantos: [3] },
+                    { name: "Limbo", color: "#CD5C5C", cantos: [4] },
+                    { name: "Lust", color: "#E9967A", cantos: [5] },
+                    { name: "Gluttony", color: "#FF6347", cantos: [6] },
+                    { name: "Greed", color: "#FF4500", cantos: [7] },
+                    { name: "Wrath", color: "#B22222", cantos: [8, 9] },
+                    { name: "Heresy", color: "#8B0000", cantos: [10, 11] },
+                    { name: "Violence", color: "#800000", cantos: [12, 13, 14, 15, 16, 17] },
+                    { name: "Fraud", color: "#A52A2A", cantos: [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30] },
+                    { name: "Treachery", color: "#4B0082", cantos: [31, 32, 33, 34] }
+                ]
+            },
+            purgatorio: {
+                name: "Purgatorio",
+                levels: [
+                    { name: "Ante-Purgatory", color: "#87CEEB", cantos: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    { name: "Pride", color: "#4682B4", cantos: [10, 11, 12] },
+                    { name: "Envy", color: "#5F9EA0", cantos: [13, 14, 15] },
+                    { name: "Wrath", color: "#4169E1", cantos: [16, 17] },
+                    { name: "Sloth", color: "#0000CD", cantos: [18, 19] },
+                    { name: "Avarice", color: "#00008B", cantos: [20, 21, 22] },
+                    { name: "Gluttony", color: "#1E90FF", cantos: [23, 24, 25] },
+                    { name: "Lust", color: "#6495ED", cantos: [26, 27] },
+                    { name: "Earthly Paradise", color: "#7FFFD4", cantos: [28, 29, 30, 31, 32, 33] }
+                ]
+            },
+            paradiso: {
+                name: "Paradiso",
+                levels: [
+                    { name: "Moon", color: "#FFFFE0", cantos: [1, 2, 3, 4, 5] },
+                    { name: "Mercury", color: "#FFFACD", cantos: [6, 7, 8] },
+                    { name: "Venus", color: "#FAFAD2", cantos: [9, 10] },
+                    { name: "Sun", color: "#FFD700", cantos: [11, 12, 13, 14] },
+                    { name: "Mars", color: "#FFA500", cantos: [15, 16, 17, 18] },
+                    { name: "Jupiter", color: "#F0E68C", cantos: [19, 20] },
+                    { name: "Saturn", color: "#DAA520", cantos: [21, 22] },
+                    { name: "Fixed Stars", color: "#B8860B", cantos: [23, 24, 25, 26, 27] },
+                    { name: "Primum Mobile", color: "#FFFF00", cantos: [28, 29, 30, 31, 32, 33] }
+                ]
+            }
+        };
+
+        // Update this line to initialize with an empty array instead of ["summary"]
+        let globalTags = JSON.parse(localStorage.getItem('global-tags') || '[]');
+        
+        // Function to create a table for a cantica
+        function createCanticaTable(cantica, tableId) {
+            const table = document.getElementById(tableId);
+            
+            // Determine the maximum canto number (34 for Inferno, 33 for others)
+            const maxCanto = cantica.name === "Inferno" ? 34 : 33;
+            
+            // For Purgatorio, we'll create the table in reverse order
+            const cantoOrder = [];
+            for (let canto = 1; canto <= maxCanto; canto++) {
+                cantoOrder.push(canto);
+            }
+            
+            // Reverse the canto order for Purgatorio
+            if (cantica.name === "Purgatorio") {
+                cantoOrder.reverse();
+            }
+            
+            // First, identify where each level starts and ends
+            const levelRanges = [];
+            let currentLevel = null;
+            let startCanto = 1;
+            
+            for (let canto = 1; canto <= maxCanto; canto++) {
+                // Find which level this canto belongs to
+                let level = cantica.levels.find(level => level.cantos.includes(canto));
+                if (!level) {
+                    level = cantica.levels[0]; // Default to first level if not found
+                }
+                
+                if (level.name !== currentLevel) {
+                    if (currentLevel !== null) {
+                        levelRanges.push({
+                            level: currentLevel,
+                            color: cantica.levels.find(l => l.name === currentLevel).color,
+                            start: startCanto,
+                            end: canto - 1
+                        });
+                    }
+                    currentLevel = level.name;
+                    startCanto = canto;
+                }
+                
+                // Handle the last level
+                if (canto === maxCanto) {
+                    levelRanges.push({
+                        level: currentLevel,
+                        color: level.color,
+                        start: startCanto,
+                        end: maxCanto
+                    });
+                }
+            }
+            
+            // Create a map of canto to level for quick lookup
+            const cantoToLevelMap = new Map();
+            for (let canto = 1; canto <= maxCanto; canto++) {
+                let level = cantica.levels.find(level => level.cantos.includes(canto));
+                if (!level) {
+                    level = cantica.levels[0]; // Default to first level if not found
+                }
+                cantoToLevelMap.set(canto, level);
+            }
+            
+            // For Purgatorio, we need to reverse the level ranges
+            if (cantica.name === "Purgatorio") {
+                // Create a new set of level ranges for the reversed order
+                const reversedLevelRanges = [];
+                let currentLevel = null;
+                let startIndex = 0;
+                
+                for (let i = 0; i < cantoOrder.length; i++) {
+                    const canto = cantoOrder[i];
+                    const level = cantoToLevelMap.get(canto);
+                    
+                    if (level.name !== currentLevel) {
+                        if (currentLevel !== null) {
+                            reversedLevelRanges.push({
+                                level: currentLevel,
+                                color: canticheConfig.purgatorio.levels.find(l => l.name === currentLevel).color,
+                                startIndex: startIndex,
+                                endIndex: i - 1,
+                                rowSpan: i - startIndex
+                            });
+                        }
+                        currentLevel = level.name;
+                        startIndex = i;
+                    }
+                    
+                    // Handle the last level
+                    if (i === cantoOrder.length - 1) {
+                        reversedLevelRanges.push({
+                            level: currentLevel,
+                            color: level.color,
+                            startIndex: startIndex,
+                            endIndex: i,
+                            rowSpan: i - startIndex + 1
+                        });
+                    }
+                }
+                
+                // Now create the table with merged cells for levels in the correct order
+                for (let i = 0; i < cantoOrder.length; i++) {
+                    const canto = cantoOrder[i];
+                    const row = document.createElement('tr');
+                    
+                    // Canto number cell
+                    const cantoCell = document.createElement('td');
+                    cantoCell.textContent = canto;
+                    cantoCell.className = 'canto-number';
+                    row.appendChild(cantoCell);
+                    
+                    // Check if this index is the start of a level in the reversed order
+                    const levelRange = reversedLevelRanges.find(range => range.startIndex === i);
+                    if (levelRange) {
+                        // Create a level name cell that spans multiple rows
+                        const levelNameCell = document.createElement('td');
+                        levelNameCell.className = 'level-name';
+                        levelNameCell.rowSpan = levelRange.rowSpan;
+                        
+                        // Set background color (less intense)
+                        const baseColor = hexToRgb(levelRange.color);
+                        const mediumColor = adjustLightness(baseColor.r, baseColor.g, baseColor.b, 0.1);
+                        levelNameCell.style.backgroundColor = `rgb(${mediumColor.r}, ${mediumColor.g}, ${mediumColor.b})`;
+                        
+                        // Create a span for the text and position it properly
+                        const textSpan = document.createElement('span');
+                        textSpan.className = 'level-name-text';
+                        textSpan.style.color = "white";
+                        textSpan.style.textShadow = "0 0 2px rgba(0, 0, 0, 0.3)";
+                        textSpan.textContent = levelRange.level;
+                        levelNameCell.appendChild(textSpan);
+                        
+                        row.appendChild(levelNameCell);
+                    }
+                    
+                    // Get the level for this canto
+                    const level = cantoToLevelMap.get(canto);
+                    
+                    // Create a cell for the canto content with very light color
+                    const cantoContentCell = document.createElement('td');
+                    cantoContentCell.className = 'canto-content';
+                    
+                    // Convert hex color to RGB and reduce intensity by 80%
+                    const baseColor = hexToRgb(level.color);
+                    const lighterColor = adjustLightness(baseColor.r, baseColor.g, baseColor.b, 0.8);
+                    cantoContentCell.style.backgroundColor = `rgb(${lighterColor.r}, ${lighterColor.g}, ${lighterColor.b})`;
+                    
+                    // Create a container for tag-based notes instead of a single textarea
+                    const noteContainer = document.createElement('div');
+                    noteContainer.className = 'note-container';
+                    
+                    // Create a unique ID for this canto's notes
+                    const noteId = `${cantica.name.toLowerCase()}-canto-${canto}`;
+                    noteContainer.id = noteId + '-container';
+                    
+                    // Load saved notes for this canto
+                    let cantoNotes = {};
+                    const savedNotesStr = localStorage.getItem(noteId);
+                    if (savedNotesStr) {
+                        try {
+                            // Try to parse as JSON (new format)
+                            cantoNotes = JSON.parse(savedNotesStr);
+                        } catch (e) {
+                            // If it fails, it's the old format (plain text)
+                            // Just convert to empty object instead of adding a "notes" tag
+                            cantoNotes = {};
+                            
+                            // Keep the original content in localStorage, but don't display it
+                            // This way the user doesn't lose data, but starts fresh with tags
+                        }
+                    }
+                    
+                    // Create tag sections for this canto
+                    createTagSections(noteContainer, noteId, cantoNotes);
+                    
+                    cantoContentCell.appendChild(noteContainer);
+                    row.appendChild(cantoContentCell);
+                    table.appendChild(row);
+                }
+            } else {
+                // Normal handling for Inferno and Paradiso (unchanged)
+                // Now create the table with merged cells for levels
+                for (let canto = 1; canto <= maxCanto; canto++) {
+                    const row = document.createElement('tr');
+                    
+                    // Canto number cell
+                    const cantoCell = document.createElement('td');
+                    cantoCell.textContent = canto;
+                    cantoCell.className = 'canto-number';
+                    row.appendChild(cantoCell);
+                    
+                    // Check if this canto is the start of a level
+                    const levelRange = levelRanges.find(range => range.start === canto);
+                    if (levelRange) {
+                        // Create a level name cell that spans multiple rows
+                        const levelNameCell = document.createElement('td');
+                        levelNameCell.className = 'level-name';
+                        levelNameCell.rowSpan = levelRange.end - levelRange.start + 1;
+                        
+                        // Set background color (less intense)
+                        const baseColor = hexToRgb(levelRange.color);
+                        const mediumColor = adjustLightness(baseColor.r, baseColor.g, baseColor.b, 0.1);
+                        levelNameCell.style.backgroundColor = `rgb(${mediumColor.r}, ${mediumColor.g}, ${mediumColor.b})`;
+                        
+                        // Create a span for the text and position it properly
+                        const textSpan = document.createElement('span');
+                        textSpan.className = 'level-name-text';
+                        
+                        // Set text color to white for Inferno
+                        if (cantica.name === "Inferno") {
+                            textSpan.style.color = "white";
+                            textSpan.style.textShadow = "0 0 2px rgba(0, 0, 0, 0.3)";
+                        }
+                        
+                        textSpan.textContent = levelRange.level;
+                        levelNameCell.appendChild(textSpan);
+                        
+                        row.appendChild(levelNameCell);
+                    }
+                    
+                    // Find which level this canto belongs to for the content cell
+                    let level = cantica.levels.find(level => level.cantos.includes(canto));
+                    if (!level) {
+                        level = cantica.levels[0]; // Default to first level if not found
+                    }
+                    
+                    // Create a cell for the canto content with very light color
+                    const cantoContentCell = document.createElement('td');
+                    cantoContentCell.className = 'canto-content';
+                    
+                    // Convert hex color to RGB and reduce intensity by 80%
+                    const baseColor = hexToRgb(level.color);
+                    const lighterColor = adjustLightness(baseColor.r, baseColor.g, baseColor.b, 0.8);
+                    cantoContentCell.style.backgroundColor = `rgb(${lighterColor.r}, ${lighterColor.g}, ${lighterColor.b})`;
+                    
+                    // Create a container for tag-based notes instead of a single textarea
+                    const noteContainer = document.createElement('div');
+                    noteContainer.className = 'note-container';
+                    
+                    // Create a unique ID for this canto's notes
+                    const noteId = `${cantica.name.toLowerCase()}-canto-${canto}`;
+                    noteContainer.id = noteId + '-container';
+                    
+                    // Load saved notes for this canto
+                    let cantoNotes = {};
+                    const savedNotesStr = localStorage.getItem(noteId);
+                    if (savedNotesStr) {
+                        try {
+                            // Try to parse as JSON (new format)
+                            cantoNotes = JSON.parse(savedNotesStr);
+                        } catch (e) {
+                            // If it fails, it's the old format (plain text)
+                            // Just convert to empty object instead of adding a "notes" tag
+                            cantoNotes = {};
+                        }
+                    }
+                    
+                    // Create tag sections for this canto
+                    createTagSections(noteContainer, noteId, cantoNotes);
+                    
+                    cantoContentCell.appendChild(noteContainer);
+                    row.appendChild(cantoContentCell);
+                    table.appendChild(row);
+                }
+            }
+        }
+        
+        // Helper function to convert hex to RGB
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 0, g: 0, b: 0 };
+        }
+        
+        // Helper function to adjust color lightness (make it 20% less intense)
+        function adjustLightness(r, g, b, factor) {
+            return {
+                r: Math.min(255, Math.floor(r + (255 - r) * factor)),
+                g: Math.min(255, Math.floor(g + (255 - g) * factor)),
+                b: Math.min(255, Math.floor(b + (255 - b) * factor))
+            };
+        }
+        
+        // New function to create tag sections for a canto
+        function createTagSections(container, noteId, cantoNotes) {
+            container.innerHTML = ''; // Clear existing content
+            
+            // Create "Add Tag" button at the top (keeping your "+" text)
+            const addTagButton = document.createElement('button');
+            addTagButton.textContent = '+';
+            addTagButton.className = 'add-tag-button';
+            addTagButton.addEventListener('click', function() {
+                showAddTagDialog(noteId, container);
+            });
+            container.appendChild(addTagButton);
+            
+            // Create sections for each global tag
+            globalTags.forEach(tag => {
+                // Create a tag section if this tag doesn't exist for this canto yet
+                if (!cantoNotes[tag]) {
+                    cantoNotes[tag] = '';
+                }
+                
+                const tagSection = createTagSection(tag, cantoNotes[tag], noteId);
+                container.appendChild(tagSection);
+            });
+            
+            // Save updated notes to localStorage
+            localStorage.setItem(noteId, JSON.stringify(cantoNotes));
+        }
+        
+        // Modify the createTagSection function to add simple autofill functionality
+        function createTagSection(tag, content, noteId) {
+            const section = document.createElement('div');
+            section.className = 'tag-section';
+            
+            // Create header container to hold both tag name and controls
+            const headerContainer = document.createElement('div');
+            headerContainer.className = 'tag-header-container';
+            
+            // Create tag header
+            const header = document.createElement('div');
+            header.className = 'tag-header';
+            header.textContent = tag;
+            headerContainer.appendChild(header);
+            
+            // Create controls container
+            const controls = document.createElement('div');
+            controls.className = 'tag-controls';
+            
+            // Add up button
+            const upButton = document.createElement('button');
+            upButton.innerHTML = '&uarr;';
+            upButton.className = 'tag-control-button';
+            upButton.title = 'Move tag up';
+            upButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                moveTag(tag, 'up');
+            });
+            controls.appendChild(upButton);
+            
+            // Add down button
+            const downButton = document.createElement('button');
+            downButton.innerHTML = '&darr;';
+            downButton.className = 'tag-control-button';
+            downButton.title = 'Move tag down';
+            downButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                moveTag(tag, 'down');
+            });
+            controls.appendChild(downButton);
+            
+            headerContainer.appendChild(controls);
+            section.appendChild(headerContainer);
+            
+            // Create content textarea
+            const textarea = document.createElement('textarea');
+            textarea.className = 'tag-content';
+            textarea.value = content || '';
+            textarea.placeholder = `Add ${tag} notes...`;
+            
+            // Add input event for autocomplete functionality
+            textarea.addEventListener('input', function(e) {
+                // Only apply autofill if no newline characters and not deleting
+                if (!this.value.includes('\n') && e.inputType !== 'deleteContentBackward' && e.inputType !== 'deleteContentForward') {
+                    const userInput = this.value.trim();
+                    
+                    // Only try to complete if there's at least one character
+                    if (userInput.length > 0) {
+                        // Get existing values for this tag
+                        const suggestions = getAllValuesForTag(tag);
+                        
+                        // Find a matching value that starts with user input
+                        const match = suggestions.find(suggestion => 
+                            suggestion.toLowerCase().startsWith(userInput.toLowerCase()) && 
+                            suggestion.length > userInput.length
+                        );
+                        
+                        if (match) {
+                            // Save cursor position
+                            const cursorPos = this.selectionStart;
+                            
+                            // Set value to the complete match
+                            this.value = match;
+                            
+                            // Select text from cursor position to end
+                            this.setSelectionRange(cursorPos, match.length);
+                        }
+                    }
+                }
+            });
+            
+            // Save notes when content changes
+            textarea.addEventListener('input', function() {
+                // Get current notes object
+                const notesObj = JSON.parse(localStorage.getItem(noteId) || '{}');
+                // Update the specific tag
+                notesObj[tag] = this.value;
+                // Save back to localStorage
+                localStorage.setItem(noteId, JSON.stringify(notesObj));
+                
+                // Auto-resize textarea
+                this.style.height = 'auto';
+                this.style.height = Math.max(30, this.scrollHeight) + 'px';
+            });
+            
+            // Auto-resize on focus
+            textarea.addEventListener('focus', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.max(30, this.scrollHeight) + 'px';
+            });
+            
+            section.appendChild(textarea);
+            return section;
+        }
+        
+        // Add a helper function to get all values for a specific tag
+        function getAllValuesForTag(tag) {
+            const values = new Set();
+            const canticheNames = ['inferno', 'purgatorio', 'paradiso'];
+            
+            canticheNames.forEach(cantica => {
+                const maxCanto = cantica === 'inferno' ? 34 : 33;
+                for (let canto = 1; canto <= maxCanto; canto++) {
+                    const noteId = `${cantica}-canto-${canto}`;
+                    const notesStr = localStorage.getItem(noteId);
+                    
+                    if (notesStr) {
+                        try {
+                            const notes = JSON.parse(notesStr);
+                            if (notes[tag] && notes[tag].trim()) {
+                                // For multiline content, just use the first line
+                                const firstLine = notes[tag].split('\n')[0].trim();
+                                if (firstLine) {
+                                    values.add(firstLine);
+                                }
+                            }
+                        } catch (e) {
+                            // Skip if not in JSON format
+                        }
+                    }
+                }
+            });
+            
+            return Array.from(values);
+        }
+        
+        // Add new function to move tags up or down in the global order
+        function moveTag(tag, direction) {
+            const index = globalTags.indexOf(tag);
+            if (index === -1) return; // Tag not found
+            
+            if (direction === 'up' && index > 0) {
+                // Swap with the tag above
+                [globalTags[index], globalTags[index - 1]] = [globalTags[index - 1], globalTags[index]];
+            } else if (direction === 'down' && index < globalTags.length - 1) {
+                // Swap with the tag below
+                [globalTags[index], globalTags[index + 1]] = [globalTags[index + 1], globalTags[index]];
+            } else {
+                // Can't move further in that direction
+                return;
+            }
+            
+            // Save updated order
+            localStorage.setItem('global-tags', JSON.stringify(globalTags));
+            
+            // Update all visible cantos to reflect the new order
+            updateAllVisibleCantos();
+        }
+        
+        // Function to update all visible cantos with the current tag order
+        function updateAllVisibleCantos() {
+            const canticheNames = ['inferno', 'purgatorio', 'paradiso'];
+            canticheNames.forEach(cantica => {
+                const maxCanto = cantica === 'inferno' ? 34 : 33;
+                for (let canto = 1; canto <= maxCanto; canto++) {
+                    const noteId = `${cantica}-canto-${canto}`;
+                    const container = document.getElementById(noteId + '-container');
+                    if (container) {
+                        const notes = JSON.parse(localStorage.getItem(noteId) || '{}');
+                        createTagSections(container, noteId, notes);
+                    }
+                }
+            });
+        }
+        
+        // Function to show dialog for adding a new tag
+        function showAddTagDialog(noteId, container) {
+            // Create modal overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'tag-dialog-overlay';
+            
+            // Create dialog
+            const dialog = document.createElement('div');
+            dialog.className = 'tag-dialog';
+            
+            // Add title
+            const title = document.createElement('h3');
+            title.textContent = 'Add New Tag';
+            dialog.appendChild(title);
+            
+            // Add explanation
+            const explanation = document.createElement('p');
+            explanation.textContent = 'This tag will be added to all cantos.';
+            dialog.appendChild(explanation);
+            
+            // Add input field
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Enter tag name';
+            
+            // Add event listener for Enter key
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' || event.keyCode === 13) {
+                    event.preventDefault(); // Prevent default form submission
+                    
+                    // Same logic as the Add Tag button
+                    const newTag = input.value.trim();
+                    if (newTag && !globalTags.includes(newTag)) {
+                        // Add to global tags
+                        globalTags.push(newTag);
+                        localStorage.setItem('global-tags', JSON.stringify(globalTags));
+                        
+                        // Update all cantos with the new tag
+                        updateAllCantosWithNewTag(newTag);
+                        
+                        // Refresh the current container
+                        const cantoNotes = JSON.parse(localStorage.getItem(noteId) || '{}');
+                        createTagSections(container, noteId, cantoNotes);
+                        
+                        // Close dialog
+                        document.body.removeChild(overlay);
+                    } else {
+                        alert('Please enter a valid and unique tag name');
+                    }
+                }
+            });
+            
+            dialog.appendChild(input);
+            
+            // Add buttons container
+            const buttons = document.createElement('div');
+            buttons.className = 'dialog-buttons';
+            
+            // Add cancel button
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = 'Cancel';
+            cancelBtn.addEventListener('click', function() {
+                document.body.removeChild(overlay);
+            });
+            buttons.appendChild(cancelBtn);
+            
+            // Add confirm button
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = 'Add Tag';
+            confirmBtn.addEventListener('click', function() {
+                const newTag = input.value.trim();
+                if (newTag && !globalTags.includes(newTag)) {
+                    // Add to global tags
+                    globalTags.push(newTag);
+                    localStorage.setItem('global-tags', JSON.stringify(globalTags));
+                    
+                    // Update all cantos with the new tag
+                    updateAllCantosWithNewTag(newTag);
+                    
+                    // Refresh the current container
+                    const cantoNotes = JSON.parse(localStorage.getItem(noteId) || '{}');
+                    createTagSections(container, noteId, cantoNotes);
+                    
+                    // Close dialog
+                    document.body.removeChild(overlay);
+                } else {
+                    alert('Please enter a valid and unique tag name');
+                }
+            });
+            buttons.appendChild(confirmBtn);
+            
+            dialog.appendChild(buttons);
+            overlay.appendChild(dialog);
+            document.body.appendChild(overlay);
+            
+            // Focus the input
+            input.focus();
+        }
+        
+        // Function to update all cantos with a new tag
+        function updateAllCantosWithNewTag(newTag) {
+            const canticheNames = ['inferno', 'purgatorio', 'paradiso'];
+            canticheNames.forEach(cantica => {
+                const maxCanto = cantica === 'inferno' ? 34 : 33;
+                for (let canto = 1; canto <= maxCanto; canto++) {
+                    const noteId = `${cantica}-canto-${canto}`;
+                    const notes = JSON.parse(localStorage.getItem(noteId) || '{}');
+                    
+                    // Add the new tag if it doesn't exist
+                    if (notes[newTag] === undefined) {
+                        notes[newTag] = '';
+                        localStorage.setItem(noteId, JSON.stringify(notes));
+                    }
+                    
+                    // Update the UI if this canto is currently visible
+                    const container = document.getElementById(noteId + '-container');
+                    if (container) {
+                        createTagSections(container, noteId, notes);
+                    }
+                }
+            });
+        }
+        
+        // Update the addClearNotesButton function to include both buttons in a container
+        function addClearNotesButton() {
+            const container = document.querySelector('.container');
+            
+            // Create a div to hold both buttons side by side
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.display = 'flex';
+            buttonContainer.style.justifyContent = 'center';
+            buttonContainer.style.gap = '10px';
+            buttonContainer.style.margin = '20px auto';
+            
+            // Clear button
+            const clearButton = document.createElement('button');
+            clearButton.textContent = 'Clear All Notes';
+            clearButton.style.padding = '8px 16px';
+            clearButton.style.backgroundColor = '#8B0000';
+            clearButton.style.color = 'white';
+            clearButton.style.border = 'none';
+            clearButton.style.borderRadius = '4px';
+            clearButton.style.cursor = 'pointer';
+            
+            clearButton.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear all your notes? This will also clear all your tags.')) {
+                    // Clear global tags first
+                    globalTags = [];
+                    localStorage.setItem('global-tags', JSON.stringify(globalTags));
+                    
+                    // Get all note IDs and clear them
+                    const canticheNames = ['inferno', 'purgatorio', 'paradiso'];
+                    canticheNames.forEach(cantica => {
+                        // Use 34 as the max canto for Inferno, 33 for others
+                        const maxCanto = cantica === 'inferno' ? 34 : 33;
+                        for (let canto = 1; canto <= maxCanto; canto++) {
+                            const noteId = `${cantica}-canto-${canto}`;
+                            localStorage.removeItem(noteId);
+                            
+                            // Reset the UI if this canto is currently visible
+                            const container = document.getElementById(noteId + '-container');
+                            if (container) {
+                                // Pass empty object since there are no tags now
+                                createTagSections(container, noteId, {});
+                            }
+                        }
+                    });
+                    
+                    alert('All notes and tags have been cleared.');
+                }
+            });
+            
+            // Export button
+            const exportButton = document.createElement('button');
+            exportButton.textContent = 'Export Notes as CSV';
+            exportButton.style.padding = '8px 16px';
+            exportButton.style.backgroundColor = '#4682B4';
+            exportButton.style.color = 'white';
+            exportButton.style.border = 'none';
+            exportButton.style.borderRadius = '4px';
+            exportButton.style.cursor = 'pointer';
+            
+            exportButton.addEventListener('click', exportNotesAsCSV);
+            
+            // Add buttons to container
+            buttonContainer.appendChild(clearButton);
+            buttonContainer.appendChild(exportButton);
+            container.appendChild(buttonContainer);
+        }
+        
+        // Function to export notes as CSV
+        function exportNotesAsCSV() {
+            // First, gather all unique tags across all cantos
+            const allTags = [...globalTags]; // Start with global tags
+            
+            // Loop through all canticas to find any additional tags
+            const canticheNames = ['inferno', 'purgatorio', 'paradiso'];
+            canticheNames.forEach(canticaName => {
+                const maxCanto = canticaName === 'inferno' ? 34 : 33;
+                for (let canto = 1; canto <= maxCanto; canto++) {
+                    const noteId = `${canticaName}-canto-${canto}`;
+                    const notesStr = localStorage.getItem(noteId);
+                    if (notesStr) {
+                        try {
+                            const notes = JSON.parse(notesStr);
+                            Object.keys(notes).forEach(tag => {
+                                if (!allTags.includes(tag)) {
+                                    allTags.push(tag);
+                                }
+                            });
+                        } catch (e) {
+                            // Skip if not in JSON format
+                        }
+                    }
+                }
+            });
+            
+            // Create CSV header with all tags
+            let csvContent = "Cantica,Canto,Level," + allTags.map(tag => `"${tag}"`).join(',') + "\n";
+            
+            // Loop through all canticas
+            canticheNames.forEach(canticaName => {
+                const cantica = canticheConfig[canticaName];
+                const maxCanto = canticaName === 'inferno' ? 34 : 33;
+                
+                // Loop through all cantos
+                for (let canto = 1; canto <= maxCanto; canto++) {
+                    // Get the notes for this canto
+                    const noteId = `${canticaName}-canto-${canto}`;
+                    const notesStr = localStorage.getItem(noteId);
+                    
+                    if (notesStr) {
+                        let hasContent = false;
+                        let tagValues = {};
+                        
+                        try {
+                            // Try to parse as JSON (new format)
+                            const notes = JSON.parse(notesStr);
+                            Object.keys(notes).forEach(tag => {
+                                const content = notes[tag];
+                                if (content && content.trim() !== "") {
+                                    hasContent = true;
+                                    tagValues[tag] = content;
+                                }
+                            });
+                        } catch (e) {
+                            // Old format - plain text
+                            const content = notesStr;
+                            if (content && content.trim() !== "") {
+                                hasContent = true;
+                                tagValues["notes"] = content;
+                            }
+                        }
+                        
+                        if (hasContent) {
+                            // Find which level this canto belongs to
+                            let level = cantica.levels.find(level => level.cantos.includes(canto));
+                            if (!level) {
+                                level = cantica.levels[0];
+                            }
+                            
+                            // Start the CSV row
+                            let row = `"${cantica.name}","${canto}","${level.name}",`;
+                            
+                            // Add each tag's content
+                            allTags.forEach(tag => {
+                                const content = tagValues[tag] || "";
+                                // Format for CSV (escape quotes and newlines)
+                                const formattedContent = content
+                                    .replace(/"/g, '""')  // Escape quotes
+                                    .replace(/\n/g, ' '); // Replace newlines with spaces
+                                
+                                row += `"${formattedContent}",`;
+                            });
+                            
+                            // Remove trailing comma and add newline
+                            csvContent += row.slice(0, -1) + "\n";
+                        }
+                    }
+                }
+            });
+            
+            // Create and download the CSV file
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'divine_comedy_notes.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Add CSS styles to accommodate tag controls
+        function addTagStyles() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .note-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    width: 100%;
+                    padding: 4px;
+                    box-sizing: border-box; /* Ensure padding is included in width */
+                }
+                
+                .add-tag-button {
+                    align-self: flex-start;
+                    background-color: transparent;
+                    color: #333; /* Dark text color */
+                    border: none;
+                    border-radius: 2px;
+                    padding: 0;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    margin-bottom: 4px;
+                    width: 14px; /* Even smaller width */
+                    height: 14px; /* Even smaller height */
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                .add-tag-button:hover {
+                    background-color: rgba(0, 0, 0, 0.05); /* Very subtle hover effect */
+                }
+                
+                .tag-section {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    padding-bottom: 6px;
+                    margin-bottom: 2px; /* Small margin instead of border */
+                    /* Removed border-bottom */
+                }
+                
+                .tag-header-container {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    background-color: rgba(0,0,0,0.05);
+                    border-radius: 3px 3px 0 0;
+                    padding: 2px 6px;
+                }
+                
+                .tag-header {
+                    font-weight: bold;
+                    font-size: 11px;
+                    color: #444;
+                }
+                
+                .tag-controls {
+                    display: flex;
+                    gap: 4px;
+                }
+                
+                .tag-control-button {
+                    background: none;
+                    border: none;
+                    color: #666;
+                    cursor: pointer;
+                    font-size: 11px;
+                    padding: 0 2px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 16px;
+                    width: 16px;
+                    border-radius: 3px;
+                }
+                
+                .tag-control-button:hover {
+                    background-color: rgba(70, 130, 180, 0.2);
+                    color: #4682B4;
+                }
+                
+                .tag-content {
+                    width: 100%;
+                    min-height: 24px;
+                    border: none;
+                    background-color: transparent;
+                    font-family: Helvetica, Arial, sans-serif;
+                    font-size: 12px;
+                    padding: 4px 6px;
+                    resize: vertical;
+                    overflow: auto;
+                    margin-top: 2px;
+                }
+                
+                .tag-content:focus {
+                    outline: 1px solid #4682B4;
+                    box-shadow: 0 0 3px rgba(70, 130, 180, 0.5);
+                }
+                
+                .tag-dialog-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: rgba(0,0,0,0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                }
+                
+                .tag-dialog {
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    width: 300px;
+                    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+                }
+                
+                .tag-dialog h3 {
+                    margin-top: 0;
+                    color: #333;
+                }
+                
+                .tag-dialog p {
+                    color: #666;
+                    font-size: 14px;
+                }
+                
+                .tag-dialog input {
+                    width: 100%;
+                    padding: 8px;
+                    margin: 10px 0;
+                    box-sizing: border-box;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                }
+                
+                .dialog-buttons {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 10px;
+                    margin-top: 15px;
+                }
+                
+                .dialog-buttons button {
+                    padding: 6px 12px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+                
+                .dialog-buttons button:first-child {
+                    background-color: #ddd;
+                    color: #333;
+                }
+                
+                .dialog-buttons button:last-child {
+                    background-color: #4682B4;
+                    color: white;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Initialize the visualization
+        window.onload = function() {
+            // Add styles for tag-based UI
+            addTagStyles();
+            
+            // Create tables and buttons
+            createCanticaTable(canticheConfig.inferno, 'inferno-table');
+            createCanticaTable(canticheConfig.purgatorio, 'purgatorio-table');
+            createCanticaTable(canticheConfig.paradiso, 'paradiso-table');
+            addClearNotesButton();
+            
+            // Resize all textareas based on content
+            document.querySelectorAll('.tag-content').forEach(textarea => {
+                if (textarea.value) {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = Math.max(30, textarea.scrollHeight) + 'px';
+                }
+            });
+        };
+    </script>
+</body>
+</html>
