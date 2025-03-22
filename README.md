@@ -12,6 +12,7 @@ A note-taking tool with CSV export functionality for students of Dante Alighieri
   - Characters
   - Plot
   - Summary
+- Tags can be rearranged by the arrow toggles.
 
 ### Storage
 Your notes are stored in local browser memory.
